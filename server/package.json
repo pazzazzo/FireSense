@@ -1,17 +1,22 @@
 {
-  "name": "firesense-server",
+  "dependencies": {
+    "@pm2/io": "^5.0.2",
+    "express": "^4.18.3",
+    "http": "^0.0.1-security",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.9.3",
+    "net": "^1.0.2",
+    "socket.io": "^4.7.5",
+    "uuid": "^9.0.1"
+  },
+  "name": "firesense",
   "version": "0.0.1",
-  "description": "Un système de détection de fumée innovant utilisant des capteurs MQ2 sur des poteaux connectés à des Arduinos.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "install": "npm install",
+    "start": "node index"
   },
-  "author": "pazzazzo",
+  "author": "",
   "license": "ISC",
-  "dependencies": {
-    "express": "^4.18.2",
-    "http": "^0.0.1-security",
-    "net": "^1.0.2",
-    "socket.io": "^4.7.4"
-  }
+  "description": ""
 }
