@@ -58,16 +58,6 @@ let users = {
     "name": "Le prof",
     "online": false,
     "admin": true,
-  },
-  "tmr": {
-    "name": "Un gros caca boudin",
-    "online": false,
-    "admin": false,
-  },
-  "tmre": {
-    "name": "La grosse mère de lolo la pute",
-    "online": false,
-    "admin": false,
   }
 }
 
