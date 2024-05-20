@@ -1,0 +1,28 @@
+@import url("../base.css");
+
+#pylons{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 280px;
+    background: var(--users-bg);
+}
+
+.data{
+    height: 100%;
+    width: calc(100% - 280px);
+    display: flex;
+    justify-content: start;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
+.canvas{
+    position: absolute;
+    padding: 0;
+}
+
+.captor-cursor-container {
+    display: flex;
+}

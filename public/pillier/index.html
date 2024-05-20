@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <script src="../autoconnect.js" type="module"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="load" id="load">
+        <div class="loadingspinner">
+            <div id="square1"></div>
+            <div id="square2"></div>
+            <div id="square3"></div>
+            <div id="square4"></div>
+            <div id="square5"></div>
+        </div>
+    </div>
+    <div class="menu">
+        <a class="btn" href="../map"><span>carte</span></a>
+        <a class="btn active" href="../pillier/"><span>pillier</span></a>
+        <a class="btn" href="../user/"><span>user</span></a>
+        <a class="btn" href="../log/"><span>logs</span></a>
+    </div>
+    
+    <div class="main">
+        <div class="header">
+            <h1>FireSense</h1>
+        </div>
+        <div class="root">
+            <canvas class="canvas hidden" id="canvas" height="600" width="600"></canvas>
+            <div id="pylons">
+
+            </div>
+            <div class="data">
+                <div class="dt dt-btn" id="location"><span>modifier l'emplacement du pillier</span></div>
+                <div id="sensitivity">
+                    
+                </div>
+                <div class="dt dt-btn" id="sensor"><span>regler le capteur</span></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="popup-container hidden" id="error-popup">
+        <div class="popup">
+            <span id="popup-title">Erreur</span>
+            <span id="popup-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi fugiat a, quis magnam placeat esse nulla aut tenetur quo fugit quaerat consequatur qui expedita soluta aliquam alias sit quod officia.</span>
+            <span id="popup-reload">Recharger</span>
+        </div>
+    </div>
+    <div class="popup-container hidden" id="captor-popup">
+        <div class="popup">
+            <span class="popup-title">Sensibilité des capteurs</span>
+            <div class="captor-cursor-container">
+                <input type="range" min="-100" value="0" max="100" class="captor-cursor">
+                <div class="captor-cursor-value">0%</div>
+            </div>
+            <div class="captor-cursor-container">
+                <input type="range" min="-100" value="0" max="100" class="captor-cursor">
+                <div class="captor-cursor-value">0%</div>
+            </div>
+            <div class="captor-cursor-container">
+                <input type="range" min="-100" value="0" max="100" class="captor-cursor">
+                <div class="captor-cursor-value">0%</div>
+            </div>
+            <div class="captor-cursor-container">
+                <input type="range" min="-100" value="0" max="100" class="captor-cursor">
+                <div class="captor-cursor-value">0%</div>
+            </div>
+            <div class="captor-cursor-container">
+                <input type="range" min="-100" value="0" max="100" class="captor-cursor">
+                <div class="captor-cursor-value">0%</div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js" type="module"></script>
+</body>
+</html>

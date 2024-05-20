@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <script src="../autoconnect.js" type="module"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="load" id="load">
+        <div class="loadingspinner">
+            <div id="square1"></div>
+            <div id="square2"></div>
+            <div id="square3"></div>
+            <div id="square4"></div>
+            <div id="square5"></div>
+        </div>
+    </div>
+    <div class="menu">
+        <a href="../map" class="btn"><span>carte</span></a>
+        <a href="../pillier/" class="btn"><span>pillier</span></a>
+        <a href="../user/" class="btn active"><span>user</span></a>
+        <a href="../log/" class="btn"><span>logs</span></a>
+    </div>
+
+    <div class="main">
+        <div class="header">
+            <h1>FireSense</h1>
+        </div>
+        <div class="root">
+            <div id="users"></div>
+            <div id="data">
+                <div class="dt"><span id="user-name">User</span></div>
+                <div class="dt"><span id="user-status">Online</span></div>
+                <div class="dt dt-btn" id="adm-btn"></div>
+                <div class="dt dt-btn" id="del-btn"><span>Supprimer</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="popup-container hidden" id="delete-popup">
+        <div class="popup">
+            <span id="popup-text"></span>
+            <div class="popup-btns">    
+                <div class="popup-btn" id="del-confirm"><span>Oui !</span></div>
+                <div class="popup-btn" id="del-cancel"><span>Non ...</span></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js" type="module"></script>
+</body>
+
+</html>

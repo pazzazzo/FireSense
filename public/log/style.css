@@ -1,0 +1,15 @@
+@import url("../base.css");
+
+.root {
+    background: #000000;
+    color: white;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    overflow: auto;
+}
+
+.log {
+    margin-top: 1rem;
+    margin-left: 1rem;
+}

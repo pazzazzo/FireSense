@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <script src="../autoconnect.js" type="module"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="load" id="load">
+        <div class="loadingspinner">
+            <div id="square1"></div>
+            <div id="square2"></div>
+            <div id="square3"></div>
+            <div id="square4"></div>
+            <div id="square5"></div>
+        </div>
+    </div>
+    <div class="menu">
+        <a class="btn active" href="../map"><span>carte</span></a>
+        <a class="btn" href="../pillier/"><span>pillier</span></a>
+        <a class="btn" href="../user/"><span>user</span></a>
+        <a class="btn" href="../log/"><span>logs</span></a>
+    </div>
+
+    <div class="main">
+        <div class="header">
+            <h1>FireSense</h1>
+        </div>
+        <div class="root">
+            <canvas height="600" width="600"></canvas>
+        </div>
+    </div>
+    <script src="script.js" type="module"></script>
+</body>
+
+</html>
