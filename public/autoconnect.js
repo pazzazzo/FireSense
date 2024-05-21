@@ -22,11 +22,14 @@ function getCookie(cname) {
 if (getCookie("token")) {
     socket.emit("login.auto", getCookie("token"), (res) => {
         if (!res.success) {
+            document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
             location = "../login"
         } else {
             console.log(res)
         }
     })
-}else {
+}else if(location.pathname !== "/login/"){
     location = "../login"
+    console.log(location);
 }
+console.log("hello");
