@@ -8,6 +8,7 @@ const Log = require('./Log');
 const net = require("net")
 const { v4 } = require('uuid');
 const mysql = require('mysql2');
+const crypto = require('crypto');
 const io = new Server(server, {
   cors: {
     origin: "*",
@@ -15,19 +16,24 @@ const io = new Server(server, {
   }
 });
 
+function hash(text) {
+  return crypto.createHash('md5').update(text).digest('hex');
+}
+
 const con = mysql.createConnection({
   host: "localhost",
   user: "firesense",
   password: "ungroscaca",
 });
 
-con.connect(function(err) {
+con.connect(function (err) {
   if (err) throw err;
   console.log("Connected!");
 });
 
 const realtimeUser = pm2.metric({
   name: 'Realtime user',
+  id: 'app/realtime/users',
 })
 
 const port = {
@@ -60,6 +66,7 @@ let users = {
     "admin": true,
   }
 }
+let users_cookie = {}
 
 let pylons = {
   "firesense-8320d7da-b848-4406-b43d-38f624d3abc6": {
@@ -69,23 +76,23 @@ let pylons = {
     },
     mq2: [
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
     ],
@@ -97,23 +104,23 @@ let pylons = {
     },
     mq2: [
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
     ],
@@ -125,23 +132,23 @@ let pylons = {
     },
     mq2: [
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
     ],
@@ -153,23 +160,23 @@ let pylons = {
     },
     mq2: [
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
       {
-        "sensibility": 0.5,
+        "sensibility": 0,
         "value": 0.30
       },
     ],
@@ -186,7 +193,7 @@ function rdm(min, max) { // min and max included
 //     },
 //     mq2: [
 //       {
-//         "sensibility": 0.5,
+//         "sensibility": 0,
 //         "value": 0.30
 //       }
 //     ],
@@ -198,7 +205,25 @@ io.on('connection', (socket) => {
   // socket.emit("loc.change", "https://www.youtube.com/watch?v=HVQSbgG69Sc")
   // socket.emit("loc.change", "https://pazzazzo.github.io")
   realtimeUser.set(io.sockets.sockets.length)
-
+  socket.on("login.manual", (userid, password, cb) => {
+    if (users[userid]) {
+      let cookie = `firesense-${v4()}`
+      let hashed_cookie = hash(cookie)
+      users[userid].cookie = hashed_cookie
+      users_cookie[hashed_cookie] = userid
+      cb({ success: true, cookie, user: users[userid]})
+    } else {
+      cb({ success: false})
+    }
+  })
+  socket.on("login.auto", (cookie, cb) => {
+    let hashed_cookie = hash(cookie)
+    if (users_cookie[hashed_cookie]) {
+      cb({ success: true, user: users[users_cookie[hashed_cookie]]})
+    } else {
+      cb({ success: false})
+    }
+  })
   socket.on("users.get", () => {
     socket.emit("users.update", users)
   })
@@ -213,7 +238,7 @@ io.on('connection', (socket) => {
   })
   socket.on("user.admin.change", (id, callback) => {
     users[id].admin = !users[id].admin
-    
+
     log.add(`change admin: ${id}`);
     callback(true)
     socket.emit("users.update", users)
@@ -263,25 +288,27 @@ io.on('connection', (socket) => {
     }
   })
 
-  socket.on("mq2.sensibility.set", (pylonId, captorId, sensibility, cb) => {
-    if (!captorId || !Number.isInteger(captorId) || Number.isNaN(captorId) || captorId < 0 || captorId > 4) {
-      return cb(false, new Error(`The ID of captor is incorrect. Must be an integer between 0 and 4.`))
+  socket.on("mq2.sensibility.set", (pylonId, captorId, sensibility, cb = () => {}) => {
+    if (!Number.isInteger(captorId) || Number.isNaN(captorId) || captorId < 0 || captorId > 4) {
+      return cb(false, `The ID of captor is incorrect. Must be an integer between 0 and 4.`)
     }
-    if (!sensibility || !Number.isInteger(sensibility) || Number.isNaN(sensibility) || sensibility < 0 || sensibility > 2) {
-      return cb(false, new Error(`The sensibility of captor is incorrect. Must be an float between 0 and 2.`))
+    if (!Number.isInteger(sensibility) || Number.isNaN(sensibility) || sensibility < -100 || sensibility > 100) {
+      return cb(false, `The sensibility of captor is incorrect. Must be an float between 0 and 2.`)
     }
     if (pylons.hasOwnProperty(pylonId)) {
-      let pylon = pylons[pylonId]
-      pylon.mq2[captorId] = sensibility
+      pylons[pylonId].mq2[captorId].sensibility = sensibility
       return cb(true)
     } else {
-      return cb(false, new Error(`The pylon with id "${pylonId}" does not exist.`))
+      return cb(false, `The pylon with id "${pylonId}" does not exist.`)
     }
   })
 
   socket.on("disconnect", (r) => {
     log.add(`a user disconnected (${r})`);
     realtimeUser.set(io.sockets.sockets.length)
+  })
+  socket.on("error", (r) => {
+    console.error(r)
   })
 });
 
